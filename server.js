@@ -80,7 +80,7 @@ const { errorPage } = require('./src/views/errors');
 const { esc, icon } = require('./src/views/components');
 
 const PORT = Number(process.env.PORT || 3000);
-const HOST = process.env.HOST || '127.0.0.1';
+const HOST = process.env.HOST || (process.env.VERCEL ? '0.0.0.0' : '127.0.0.1');
 const ROOT = __dirname;
 const PUBLIC = path.join(ROOT, 'public');
 

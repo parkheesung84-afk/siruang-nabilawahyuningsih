@@ -5,7 +5,10 @@ const path = require('node:path');
 const { DatabaseSync } = require('node:sqlite');
 
 const ROOT = path.resolve(__dirname, '..');
-const DEFAULT_DB = path.join(ROOT, 'data', 'siruang.db');
+// Vercel hanya mengizinkan penulisan di /tmp (dan isinya sementara).
+const DEFAULT_DB = process.env.VERCEL
+  ? '/tmp/siruang.db'
+  : path.join(ROOT, 'data', 'siruang.db');
 const SCHEMA = fs.readFileSync(path.join(__dirname, 'schema.sql'), 'utf8');
 
 let singleton = null;
@@ -15,6 +18,7 @@ function openDb(filename = process.env.SIRUANG_DB || DEFAULT_DB) {
     fs.mkdirSync(path.dirname(filename), { recursive: true });
   }
   const db = new DatabaseSync(filename);
+  console.log('[siruang] database:', filename);
   db.exec('PRAGMA foreign_keys = ON;');
   db.exec('PRAGMA busy_timeout = 8000;');
   if (filename !== ':memory:') {

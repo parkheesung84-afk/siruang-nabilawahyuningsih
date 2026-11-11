@@ -4,7 +4,11 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { nowIso } = require('./time');
 
-const OUTBOX = process.env.SIRUANG_OUTBOX || path.join(__dirname, '..', 'data', 'outbox.log');
+const OUTBOX =
+  process.env.SIRUANG_OUTBOX ||
+  (process.env.VERCEL
+    ? '/tmp/outbox.log'
+    : path.join(__dirname, '..', 'data', 'outbox.log'));
 
 function audit(db, { actor, action, objectType, objectId, reason = null, meta = {} }) {
   const actorId = actor && typeof actor === 'object' ? actor.id : null;

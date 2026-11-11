@@ -6,3 +6,5 @@ data/outbox.log
 .env.*
 .DS_Store
 *.log
+
+.vercel
