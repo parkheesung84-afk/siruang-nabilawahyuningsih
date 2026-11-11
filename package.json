@@ -11,6 +11,6 @@
     "test:concurrency": "node scripts/concurrency.js"
   },
   "engines": {
-    "node": ">=22.5.0"
+    "node": "24.x"
   }
 }

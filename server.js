@@ -1525,7 +1525,7 @@ function serveStatic(req, res, pathname) {
 
 /* ------------------------------------------------------------- server */
 
-const server = http.createServer(async (req, res) => {
+async function handleRequest(req, res) {
   let url;
   try {
     url = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
@@ -1589,11 +1589,18 @@ const server = http.createServer(async (req, res) => {
       })
     });
   }
-});
+}
 
-server.listen(PORT, HOST, () => {
-  console.log(`SiRuang listening on http://${HOST}:${PORT}`);
-});
+const server = http.createServer(handleRequest);
+
+if (require.main === module) {
+  server.listen(PORT, HOST, () => {
+    console.log(`SiRuang listening on http://${HOST}:${PORT}`);
+  });
+
+  process.on('SIGINT', shutdown);
+  process.on('SIGTERM', shutdown);
+}
 
 function shutdown() {
   server.close(() => {
@@ -1605,5 +1612,7 @@ function shutdown() {
     process.exit(0);
   });
 }
-process.on('SIGINT', shutdown);
-process.on('SIGTERM', shutdown);
+
+module.exports = handleRequest;
+module.exports.server = server;
+module.exports.shutdown = shutdown;

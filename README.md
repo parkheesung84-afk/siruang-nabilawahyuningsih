@@ -126,6 +126,16 @@ tests/
 docs/                     PRD, DATA, DESIGN, API, TESTING
 ```
 
+## Deploy Vercel (mode demo)
+
+Repo ini sudah menyertakan `vercel.json` dan `api/index.js` agar bisa dibuka di Vercel.
+
+Vercel tidak menyediakan disk permanen, jadi mode ini menaruh SQLite di `/tmp`:
+
+- Data (reservasi, sesi login, audit) **hilang setiap cold start** dan tidak dibagi antar instance.
+- Cocok untuk demo tampilan/alur sekali jalan, bukan uji coba multi-pengguna.
+- Untuk data yang konsisten, pakai host dengan persistent disk (Render/Railway) atau database eksternal.
+
 ## Batasan rilis 1.0
 
 Autentikasi demo, email mock, tanpa pembayaran/inventaris/check-in QR/reservasi berulang/aplikasi native. Belum diuji untuk beban 300 pengguna, usability 10 peserta, atau SSO/email produksi. Lihat `docs/TESTING.md`.
